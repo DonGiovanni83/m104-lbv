@@ -1,0 +1,73 @@
+//// -- LEVEL 1
+//// -- Tables and References
+
+// Creating tables
+
+Table adressen as A {
+  aid int [pk, increment]
+  ort varchar
+  plz int
+  adresse_1 varchar
+  adresse_2 varchar
+  tel_G varchar
+  tel_M varchar
+  email_1 varchar
+  email_2 varchar
+}
+
+Table personen as P{
+  pid int [pk, increment] // auto-increment
+  anrede varchar
+  name varchar
+  vorname varchar
+  fk_aid int [ref: > A.aid]
+}
+
+Table schulen as SU {
+  suid int [pk, increment]
+  name varchar
+  fk_aid int [ref: > A.aid]
+}
+
+Table firma as F {
+  fid int [pk,increment]
+  name varchar
+  fk_aid int [ref: > A.aid]
+}
+
+Table lehrkraft as LK {
+  lkid int [pk, increment]
+  fk_pid int [ref: > P.pid]
+}
+
+
+Table kalssen as K {
+  kid int [pk, increment]
+  fk_suid int [ref: > SU.suid]
+  name varchar
+  fk_lkid int [ref: > LK.lkid]
+}
+
+Table abv as ABV {
+  abvid int [pk, increment]
+  fk_pid int [ref: > P.pid]
+  fk_fid int [ref: > F.fid]
+
+}
+
+Table schueler as S {
+  sid int [pk, increment]
+  fk_pid int [ref: > P.pid]
+  fk_fid int [ref: > F.fid]
+  fk_kid int [ref: > K.kid]
+}
+
+Table beurteilung as B {
+  bid int [pk, increment]
+  fk_sid int [ref: > S.sid]
+  note int2 [not null, note: 'Note von 1 bis 6']
+  gewichtung float4 [not null, default: 1.0, note: 'Gewichtung von 0 bis 1']
+  bemerkung text
+}
+//----------------------------------------------//
+
